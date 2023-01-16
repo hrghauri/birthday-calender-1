@@ -4,6 +4,7 @@ import './App.css';
 import MyDatePicker from './components/MyDatePicker/MyDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { FavouriteBirthday, DayBirthdayMap } from './models/Birthday';
+import BirthdaysOn from './components/BirthdaysOn/BirthdaysOn';
 
 
 const BASE_URL = 'https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/births/';
@@ -14,50 +15,43 @@ function App() {
   const [loading, setLoading] = useState<boolean>(false);
   const [favouritebirthdaysMap, setFavouriteBirthdaysMap] = useState<DayBirthdayMap>({});
 
-
-
   useEffect(() => {
-    console.log(favouritebirthdaysMap);
     const dayKey: string = time.year() + '' + time.month() + '' + time.date();
+    // If we already have fetched for this date, we don't want to fetch again
     if (!favouritebirthdaysMap[dayKey]) {
-      const fetchPromise = getBirthdaysOnFetchWithCancel(time, dayKey);
+      const controller = new AbortController();
+      getBirthdaysOnFetchWithCancel(time, dayKey, controller);
       return () => {
-        fetchPromise.controller.abort();
+        controller.abort();
       }
     }
   }, [time]);
 
 
-  const getBirthdaysOnFetchWithCancel = (time: Dayjs, dayKey: string) => {
+  const getBirthdaysOnFetchWithCancel = async (time: Dayjs, dayKey: string, controller: AbortController) => {
     setLoading(true)
-    const controller = new AbortController();
-    const signal = controller.signal;
-    const month = time.month() + 1;
-    const date = time.date();
-    const fetchPromise: any = fetch(BASE_URL + `${month}/${date}`, {
-      signal: signal
-    })
-      .then((resp) => resp.json())
-      .then(results => {
-        let birthdays: FavouriteBirthday[] = [];
-        results.births.forEach((result: any) => {
-          birthdays.push({
-            name: result.text,
-            time,
-            favourite: false
-          })
-        })
-        setFavouriteBirthdaysMap({ ...favouritebirthdaysMap, [dayKey]: birthdays })
-      }).catch((err) => {
-        console.log(err);
-      }).finally(() => {
-        setLoading(false);
+    try {
+      const month = time.month() + 1;
+      const date = time.date();
+      const resp = await fetch(BASE_URL + `${month}/${date}`, {
+        signal: controller.signal
       });
-    fetchPromise.controller = controller;
-    return fetchPromise;
-  }
-
-
+      const results = await resp.json();
+      let favouriteBirthdays: FavouriteBirthday[] = [];
+      results.births.forEach((result: any) => {
+        favouriteBirthdays.push({
+          name: result.text,
+          time,
+          favourite: false
+        });
+      });
+      setFavouriteBirthdaysMap(prevVal => ({ ...prevVal, [dayKey]: favouriteBirthdays }));
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="App">
@@ -67,6 +61,9 @@ function App() {
           time={time}
           setNewTime={setTime}
         ></MyDatePicker>
+        <BirthdaysOn
+          time={time}
+        ></BirthdaysOn>
       </header>
     </div>
   );
