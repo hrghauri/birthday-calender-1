@@ -10,6 +10,7 @@ const BASE_URL = 'https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/birth
 function App() {
   const [time, setTime] = useState<Dayjs>(dayjs());
 
+
   useEffect(() => {
     console.log(time)
   }, [time]);
