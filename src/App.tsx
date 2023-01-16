@@ -3,28 +3,32 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import MyDatePicker from './components/MyDatePicker/MyDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
-import { Birthday, FavouriteBirthday } from './models/Birthday';
+import { FavouriteBirthday, DayBirthdayMap } from './models/Birthday';
 
 
 const BASE_URL = 'https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/births/';
 
 function App() {
   const [time, setTime] = useState<Dayjs>(dayjs());
-  const [birthdays, setBirthdays] = useState<Birthday[]>([]);
   const [searchedName, setSearchedName] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [favouritebirthdaysMap, setFavouriteBirthdaysMap] = useState<DayBirthdayMap>({});
 
 
 
   useEffect(() => {
-    const fetchPromise = getBirthdaysOnFetchWithCancel(time);
-    return () => {
-      fetchPromise.controller.abort();
+    console.log(favouritebirthdaysMap);
+    const dayKey: string = time.year() + '' + time.month() + '' + time.date();
+    if (!favouritebirthdaysMap[dayKey]) {
+      const fetchPromise = getBirthdaysOnFetchWithCancel(time, dayKey);
+      return () => {
+        fetchPromise.controller.abort();
+      }
     }
   }, [time]);
 
 
-  const getBirthdaysOnFetchWithCancel = (time: Dayjs) => {
+  const getBirthdaysOnFetchWithCancel = (time: Dayjs, dayKey: string) => {
     setLoading(true)
     const controller = new AbortController();
     const signal = controller.signal;
@@ -35,15 +39,15 @@ function App() {
     })
       .then((resp) => resp.json())
       .then(results => {
-        let birthdays: Birthday[] = [];
+        let birthdays: FavouriteBirthday[] = [];
         results.births.forEach((result: any) => {
           birthdays.push({
             name: result.text,
-            time
+            time,
+            favourite: false
           })
         })
-        console.log(birthdays);
-        setBirthdays(birthdays);
+        setFavouriteBirthdaysMap({ ...favouritebirthdaysMap, [dayKey]: birthdays })
       }).catch((err) => {
         console.log(err);
       }).finally(() => {

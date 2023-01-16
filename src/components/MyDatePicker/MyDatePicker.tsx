@@ -5,7 +5,7 @@ import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 
 
-export default function MyDatePicker(props: any) {
+export default function MyDatePicker(props: { time: Dayjs, setNewTime: Function }) {
     const time: Dayjs = props.time;
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
