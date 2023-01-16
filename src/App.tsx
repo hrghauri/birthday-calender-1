@@ -25,7 +25,7 @@ function App() {
         controller.abort();
       }
     }
-  }, [time]);
+  }, [time, favouritebirthdaysMap]);
 
 
   const getBirthdaysOnFetchWithCancel = async (time: Dayjs, dayKey: string, controller: AbortController) => {
@@ -63,6 +63,7 @@ function App() {
         ></MyDatePicker>
         <BirthdaysOn
           time={time}
+          favouritebirthdaysMap={favouritebirthdaysMap}
         ></BirthdaysOn>
       </header>
     </div>
