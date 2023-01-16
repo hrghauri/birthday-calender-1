@@ -6,16 +6,16 @@ import dayjs, { Dayjs } from 'dayjs';
 
 
 export default function MyDatePicker(props: any) {
-    const date: Dayjs = props.date;
+    const time: Dayjs = props.time;
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <StaticDatePicker
                 disableHighlightToday={true}
                 displayStaticWrapperAs='desktop'
                 openTo='day'
-                value={date}
-                onChange={(newValue) => {
-                    props.setNewDate(newValue)
+                value={time}
+                onChange={(newTime) => {
+                    props.setNewTime(newTime)
                 }}
                 renderInput={(params) => <TextField {...params} />}
             />
