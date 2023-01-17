@@ -2,16 +2,14 @@ import dayjs, { Dayjs } from 'dayjs';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
 dayjs.extend(dayOfYear)
 
-export interface Birthday {
+export interface FavouriteBirthday {
     name: string,
+    id: string,
     time: Dayjs,
-}
-
-export interface FavouriteBirthday extends Birthday {
     favourite: boolean
 }
 
 export type DayBirthdayMap = {
-    [key: string]: FavouriteBirthday[];
+    [dayKey: string]: FavouriteBirthday[];
 };
 

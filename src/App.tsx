@@ -23,11 +23,14 @@ function App() {
       return () => {
         controller.abort();
       }
+    } else {
+      console.log(favouritebirthdaysMap[dayKey]);
     }
   }, [time, favouritebirthdaysMap]);
 
 
   const getBirthdaysOnFetchWithCancel = async (time: Dayjs, dayKey: string, controller: AbortController) => {
+    let startId = 0;
     try {
       const month = time.month() + 1;
       const date = time.date();
@@ -40,6 +43,7 @@ function App() {
         favouriteBirthdays.push({
           name: result.text,
           time,
+          id: dayKey + '' + startId++,
           favourite: false
         });
       });
