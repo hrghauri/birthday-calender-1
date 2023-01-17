@@ -73,7 +73,7 @@ function App() {
           favouriteBirthdays={
             searchedName ? favouritebirthdaysMap[getDayKey(time)].
               filter((birthday) => {
-                return birthday.name.includes(searchedName)
+                return birthday.name.toLowerCase().includes(searchedName.toLocaleLowerCase())
               }) : favouritebirthdaysMap[getDayKey(time)]}
           searchedName={searchedName}
           setNewSearchedName={setSearchedName}

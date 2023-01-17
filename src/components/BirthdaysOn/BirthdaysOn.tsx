@@ -13,6 +13,8 @@ export default function BirthdaysOn(props: {
     searchedName: string, setNewSearchedName: Function
 }) {
     const time = props.time;
+    const searchedName = props.searchedName;
+    //const setNewSearchedName = props.setNewSearchedName;
     const listItems = () => props.favouriteBirthdays.
         map((birthday) => {
             return (
@@ -26,6 +28,9 @@ export default function BirthdaysOn(props: {
     return (
         <div>
             <h3>Birthdays on {dayjs.months()[time.month()]} {time.date()}</h3>
+            Search <input type="text" value={searchedName} onChange={(e) => {
+                props.setNewSearchedName(e.target.value)
+            }} />
             <div>
                 {listItems()}
             </div>
