@@ -15,7 +15,7 @@ function App() {
   const [favouritebirthdaysMap, setFavouriteBirthdaysMap] = useState<DayBirthdayMap>({});
 
   useEffect(() => {
-    const dayKey: string = time.year() + '' + time.month() + '' + time.date();
+    const dayKey: string = getDayKey(time);
     // If we already have fetched for this date, we don't want to fetch again
     if (!favouritebirthdaysMap[dayKey]) {
       const controller = new AbortController();
@@ -28,6 +28,9 @@ function App() {
     }
   }, [time, favouritebirthdaysMap]);
 
+  const getDayKey = (time: Dayjs) => {
+    return time.format("YYYYMMDD")
+  }
 
   const getBirthdaysOnFetchWithCancel = async (time: Dayjs, dayKey: string, controller: AbortController) => {
     let startId = 0;
@@ -43,7 +46,7 @@ function App() {
         favouriteBirthdays.push({
           name: result.text,
           time,
-          id: dayKey + '' + startId++,
+          id: dayKey + ',' + startId++,
           favourite: false
         });
       });
@@ -52,6 +55,8 @@ function App() {
       console.log(err);
     }
   };
+
+  const loading = () => <p>Loading..</p>
 
   return (
     <div className="App">
@@ -62,12 +67,18 @@ function App() {
         time={time}
         setNewTime={setTime}
       ></MyDatePicker>
-      <BirthdaysOn
-        time={time}
-        favouritebirthdaysMap={favouritebirthdaysMap}
-        searchedName={searchedName}
-        setNewSearchedName={setSearchedName}
-      ></BirthdaysOn>
+      {favouritebirthdaysMap[getDayKey(time)] &&
+        <BirthdaysOn
+          time={time}
+          favouriteBirthdays={
+            searchedName ? favouritebirthdaysMap[getDayKey(time)].
+              filter((birthday) => {
+                return birthday.name.includes(searchedName)
+              }) : favouritebirthdaysMap[getDayKey(time)]}
+          searchedName={searchedName}
+          setNewSearchedName={setSearchedName}
+        ></BirthdaysOn>}
+      {!favouritebirthdaysMap[getDayKey(time)] && loading()}
     </div>
   );
 }
