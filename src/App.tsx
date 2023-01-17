@@ -12,7 +12,6 @@ const BASE_URL = 'https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/birth
 function App() {
   const [time, setTime] = useState<Dayjs>(dayjs());
   const [searchedName, setSearchedName] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
   const [favouritebirthdaysMap, setFavouriteBirthdaysMap] = useState<DayBirthdayMap>({});
 
   useEffect(() => {
@@ -29,7 +28,6 @@ function App() {
 
 
   const getBirthdaysOnFetchWithCancel = async (time: Dayjs, dayKey: string, controller: AbortController) => {
-    setLoading(true)
     try {
       const month = time.month() + 1;
       const date = time.date();
@@ -48,24 +46,24 @@ function App() {
       setFavouriteBirthdaysMap(prevVal => ({ ...prevVal, [dayKey]: favouriteBirthdays }));
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
     <div className="App">
       <header className="App-header">
-        <h1>My App</h1>
-        <MyDatePicker
-          time={time}
-          setNewTime={setTime}
-        ></MyDatePicker>
-        <BirthdaysOn
-          time={time}
-          favouritebirthdaysMap={favouritebirthdaysMap}
-        ></BirthdaysOn>
+        <h1>My Favourite Birthdays App</h1>
       </header>
+      <MyDatePicker
+        time={time}
+        setNewTime={setTime}
+      ></MyDatePicker>
+      <BirthdaysOn
+        time={time}
+        favouritebirthdaysMap={favouritebirthdaysMap}
+        searchedName={searchedName}
+        setNewSearchedName={setSearchedName}
+      ></BirthdaysOn>
     </div>
   );
 }

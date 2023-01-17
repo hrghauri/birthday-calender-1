@@ -12,6 +12,6 @@ export interface FavouriteBirthday extends Birthday {
 }
 
 export type DayBirthdayMap = {
-    [key: string]: Birthday[];
+    [key: string]: FavouriteBirthday[];
 };
 

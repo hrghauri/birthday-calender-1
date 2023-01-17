@@ -8,16 +8,21 @@ dayjs().localeData()
 
 
 
-export default function BirthdaysOn(props: { time: Dayjs, favouritebirthdaysMap: DayBirthdayMap }) {
+export default function BirthdaysOn(props: {
+    time: Dayjs, favouritebirthdaysMap: DayBirthdayMap,
+    searchedName: string, setNewSearchedName: Function
+}) {
     const time = props.time;
     const dayKey: string = time.year() + '' + time.month() + '' + time.date();
 
     const listItems = () => props.favouritebirthdaysMap[dayKey].
         map((birthday, index) => {
             return (
-                <li key={index}>
-                    {birthday.name}
-                </li>)
+                <div key={index}>
+                    <StarIcon
+                        color='action'
+                    ></StarIcon>{birthday.name}
+                </div>)
         })
 
     const loading = () => <p>Loading..</p>
