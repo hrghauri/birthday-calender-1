@@ -1,6 +1,6 @@
 import { Dayjs } from 'dayjs';
 
-export interface FavouriteBirthday {
+export interface Birthday {
     name: string,
     id: string,
     time: Dayjs,
@@ -8,6 +8,6 @@ export interface FavouriteBirthday {
 }
 
 export type DayBirthdayMap = {
-    [dayKey: string]: FavouriteBirthday[];
+    [dayKey: string]: Birthday[];
 };
 

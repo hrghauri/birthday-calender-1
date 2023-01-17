@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import MyDatePicker from './components/MyDatePicker/MyDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
-import { FavouriteBirthday, DayBirthdayMap } from './models/Birthday';
+import { Birthday, DayBirthdayMap } from './models/Birthday';
 import BirthdaysOn from './components/BirthdaysOn/BirthdaysOn';
 import FavouritesList from './components/FavouritesList/FavouritesList';
 
@@ -13,19 +13,19 @@ const BASE_URL = 'https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/birth
 function App() {
   const [time, setTime] = useState<Dayjs>(dayjs());
   const [searchedName, setSearchedName] = useState<string>('');
-  const [favouritebirthdaysMap, setFavouriteBirthdaysMap] = useState<DayBirthdayMap>({});
+  const [birthdaysMap, setBirthdaysMap] = useState<DayBirthdayMap>({});
 
   useEffect(() => {
     const dayKey: string = getDayKey(time);
     // If we already have fetched for this date, we don't want to fetch again
-    if (!favouritebirthdaysMap[dayKey]) {
+    if (!birthdaysMap[dayKey]) {
       const controller = new AbortController();
       getBirthdaysOnFetchWithCancel(time, dayKey, controller);
       return () => {
         controller.abort();
       }
     }
-  }, [time, favouritebirthdaysMap]);
+  }, [time, birthdaysMap]);
 
   const getDayKey = (time: Dayjs) => {
     return time.format("YYYYMMDD")
@@ -40,16 +40,16 @@ function App() {
         signal: controller.signal
       });
       const results = await resp.json();
-      let favouriteBirthdays: FavouriteBirthday[] = [];
+      let birthdays: Birthday[] = [];
       results.births.forEach((result: any) => {
-        favouriteBirthdays.push({
+        birthdays.push({
           name: result.text,
           time,
           id: dayKey + ',' + startId++,
           favourite: false
         });
       });
-      setFavouriteBirthdaysMap(prevVal => ({ ...prevVal, [dayKey]: favouriteBirthdays }));
+      setBirthdaysMap(prevVal => ({ ...prevVal, [dayKey]: birthdays }));
     } catch (err) {
       console.log(err);
     }
@@ -57,8 +57,8 @@ function App() {
 
   const loading = () => <p>Loading..</p>
 
-  const getFavouriteBirthdays = (): FavouriteBirthday[] => {
-    return Object.values(favouritebirthdaysMap).flat().
+  const getFavouriteBirthdays = (): Birthday[] => {
+    return Object.values(birthdaysMap).flat().
       filter((birthday) => birthday.favourite === true)
   }
 
@@ -74,18 +74,18 @@ function App() {
         time={time}
         setNewTime={setTime}
       ></MyDatePicker>
-      {favouritebirthdaysMap[getDayKey(time)] &&
+      {birthdaysMap[getDayKey(time)] &&
         <BirthdaysOn
           time={time}
-          favouriteBirthdays={
-            searchedName ? favouritebirthdaysMap[getDayKey(time)].
+          birthdays={
+            searchedName ? birthdaysMap[getDayKey(time)].
               filter((birthday) => {
                 return birthday.name.toLowerCase().includes(searchedName.toLocaleLowerCase())
-              }) : favouritebirthdaysMap[getDayKey(time)]}
+              }) : birthdaysMap[getDayKey(time)]}
           searchedName={searchedName}
           setNewSearchedName={setSearchedName}
         ></BirthdaysOn>}
-      {!favouritebirthdaysMap[getDayKey(time)] && loading()}
+      {!birthdaysMap[getDayKey(time)] && loading()}
     </div>
   );
 }

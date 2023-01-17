@@ -1,7 +1,7 @@
 import React from 'react';
-import { FavouriteBirthday } from '../../models/Birthday';
+import { Birthday } from '../../models/Birthday';
 
-export default function FavouritesList(props: { favouriteBirthdays: FavouriteBirthday[] }) {
+export default function FavouritesList(props: { favouriteBirthdays: Birthday[] }) {
     return (
         <div>
             <h2>Favourite Birthdays</h2>

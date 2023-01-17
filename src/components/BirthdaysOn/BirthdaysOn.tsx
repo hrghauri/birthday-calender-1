@@ -1,5 +1,5 @@
 import React from 'react';
-import { FavouriteBirthday } from '../../models/Birthday';
+import { Birthday } from '../../models/Birthday';
 import dayjs, { Dayjs } from 'dayjs';
 import localeData from 'dayjs/plugin/localeData'
 import StarIcon from '@mui/icons-material/Star';
@@ -9,14 +9,16 @@ dayjs().localeData()
 
 
 export default function BirthdaysOn(props: {
-    time: Dayjs, favouriteBirthdays: FavouriteBirthday[],
+    time: Dayjs, birthdays: Birthday[],
     searchedName: string, setNewSearchedName: Function
 }) {
     const time = props.time;
     const searchedName = props.searchedName;
+    const birthdays = props.birthdays;
     const setNewSearchedName = props.setNewSearchedName;
 
-    const listItems = () => props.favouriteBirthdays.
+
+    const listItems = () => birthdays.
         map((birthday) => {
             return (
                 <div key={birthday.id}>
