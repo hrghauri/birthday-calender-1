@@ -5,6 +5,7 @@ import MyDatePicker from './components/MyDatePicker/MyDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { FavouriteBirthday, DayBirthdayMap } from './models/Birthday';
 import BirthdaysOn from './components/BirthdaysOn/BirthdaysOn';
+import FavouritesList from './components/FavouritesList/FavouritesList';
 
 
 const BASE_URL = 'https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/births/';
@@ -23,8 +24,6 @@ function App() {
       return () => {
         controller.abort();
       }
-    } else {
-      console.log(favouritebirthdaysMap[dayKey]);
     }
   }, [time, favouritebirthdaysMap]);
 
@@ -58,11 +57,19 @@ function App() {
 
   const loading = () => <p>Loading..</p>
 
+  const getFavouriteBirthdays = (): FavouriteBirthday[] => {
+    return Object.values(favouritebirthdaysMap).flat().
+      filter((birthday) => birthday.favourite === true)
+  }
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>My Favourite Birthdays App</h1>
       </header>
+      <FavouritesList
+        favouriteBirthdays={getFavouriteBirthdays()}
+      ></FavouritesList>
       <MyDatePicker
         time={time}
         setNewTime={setTime}

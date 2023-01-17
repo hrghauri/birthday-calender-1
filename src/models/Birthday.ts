@@ -1,6 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs';
-import dayOfYear from 'dayjs/plugin/dayOfYear';
-dayjs.extend(dayOfYear)
+import { Dayjs } from 'dayjs';
 
 export interface FavouriteBirthday {
     name: string,
