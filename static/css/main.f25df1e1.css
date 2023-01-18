@@ -1,0 +1,2 @@
+.content-Container{display:grid;grid-template-areas:"leftUpper rightWhole" "leftBottom rightWhole";grid-template-columns:50% 50%;grid-template-rows:50% 50%;height:100vh}.content-Container .myDatePicker{grid-area:leftUpper}.content-Container .birthdaysOn{grid-area:leftBottom}.content-Container .favouritesList{grid-area:rightWhole}.myStar{cursor:pointer;position:relative;top:5px}
+/*# sourceMappingURL=main.f25df1e1.css.map*/
