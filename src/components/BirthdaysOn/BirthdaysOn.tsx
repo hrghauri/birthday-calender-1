@@ -22,23 +22,32 @@ export default function BirthdaysOn(props: {
 
     const listItems = () => birthdays.
         map((birthday) => {
+            const className = birthday.favourite ?
+                `myStar myStarId${birthday.id} isFavourite` :
+                `myStar myStarId${birthday.id}`;
             return (
                 <div key={birthday.id}>
-                    {!birthday.favourite && <span className='myStar'><StarIcon onClick={() => setFavourite({ ...birthday, favourite: true })}
-                        color='action'
-                    ></StarIcon></span>}
-                    {birthday.favourite && <span className='myStar'><StarIcon onClick={() => setFavourite({ ...birthday, favourite: false })}
-                        color='primary'
-                    ></StarIcon></span>}
+                    <span className={className}>
+                        <StarIcon
+                            onClick={() => setFavourite({ ...birthday, favourite: !birthday.favourite })}
+                            color={birthday.favourite ? 'primary' : 'action'}
+                        />
+                    </span>
                     {birthday.name}
-                </div>)
+                </div>
+            )
         })
     return (
         <div>
             <h3>Birthdays on {dayjs.months()[time.month()]} {time.date()}</h3>
-            Search Filter <input type="text" value={searchedName} onChange={(e) => {
-                setNewSearchedName(e.target.value)
-            }} /> <button onClick={() => setNewSearchedName("")}>Clear Search Filter</button>
+            Search Filter
+            <input
+                type="text"
+                className='searchFilter'
+                value={searchedName}
+                onChange={(e) => { setNewSearchedName(e.target.value) }}
+            />
+            <button onClick={() => setNewSearchedName("")}>Clear Search Filter</button>
             <div>
                 <br></br>
                 {Boolean(searchedName) && <div><div>Results containing '{searchedName}':<br></br> </div>{listItems()}</div>}

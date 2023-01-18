@@ -8,11 +8,11 @@ describe('FavouritesList component', () => {
     test('should display the favourite birthdays', () => {
         const favoriteBirthdaysMap: DayBirthdayMap = {
             '0101': [
-                { id: '01010', name: 'Daria Trubnikova, Russian rhythmic gymnast', favourite: true, time: null as any },
-                { id: '01011', name: 'Jacky Ickx, Belgian racing driver', favourite: true, time: null as any },
+                { id: '0101,0', name: 'Daria Trubnikova, Russian rhythmic gymnast', favourite: true, time: null as any },
+                { id: '0101,1', name: 'Jacky Ickx, Belgian racing driver', favourite: true, time: null as any },
             ],
             '0812': [
-                { id: '08120', name: 'Bob Buhl, American baseball player (d. 2001)', favourite: true, time: null as any },
+                { id: '0812,0', name: 'Bob Buhl, American baseball player (d. 2001)', favourite: true, time: null as any },
             ]
         };
         render(<FavouritesList favoriteBirthdaysMap={favoriteBirthdaysMap} />);
