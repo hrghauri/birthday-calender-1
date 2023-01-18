@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import './App.css';
 import MyDatePicker from './components/MyDatePicker/MyDatePicker';
@@ -28,7 +27,7 @@ function App() {
   }, [time, birthdaysMap]);
 
   const getDayKey = (time: Dayjs) => {
-    return time.format("YYYYMMDD")
+    return time.format("MMDD")
   }
 
   const getBirthdaysOnFetchWithCancel = async (time: Dayjs, dayKey: string, controller: AbortController) => {
@@ -57,35 +56,54 @@ function App() {
 
   const loading = () => <p>Loading..</p>
 
-  const getFavouriteBirthdays = (): Birthday[] => {
-    return Object.values(birthdaysMap).flat().
-      filter((birthday) => birthday.favourite === true)
+  const getFavouriteBirthdays = (): DayBirthdayMap => {
+    let favoriteBirthdaysMap: DayBirthdayMap = {};
+    Object.keys(birthdaysMap).forEach(dayKey => {
+      favoriteBirthdaysMap[dayKey] = birthdaysMap[dayKey].filter(b => b.favourite);
+    });
+    return favoriteBirthdaysMap;
+  }
+
+  const setFavourite = (birthday: Birthday) => {
+    const [dayKey, birthdayKey] = birthday.id.split(',');
+    let birthdays = birthdaysMap[dayKey];
+    birthdays[Number(birthdayKey)] = birthday;
+    setBirthdaysMap(prevVal => ({ ...prevVal, [dayKey]: birthdays }));
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div>
+      <h1>My Favourite Birthdays App</h1>
+      <div className="content-Container">
+        {/* <header className="App-header">
         <h1>My Favourite Birthdays App</h1>
-      </header>
-      <FavouritesList
-        favouriteBirthdays={getFavouriteBirthdays()}
-      ></FavouritesList>
-      <MyDatePicker
-        time={time}
-        setNewTime={setTime}
-      ></MyDatePicker>
-      {birthdaysMap[getDayKey(time)] &&
-        <BirthdaysOn
-          time={time}
-          birthdays={
-            searchedName ? birthdaysMap[getDayKey(time)].
-              filter((birthday) => {
-                return birthday.name.toLowerCase().includes(searchedName.toLocaleLowerCase())
-              }) : birthdaysMap[getDayKey(time)]}
-          searchedName={searchedName}
-          setNewSearchedName={setSearchedName}
-        ></BirthdaysOn>}
-      {!birthdaysMap[getDayKey(time)] && loading()}
+      </header> */}
+        <div className='myDatePicker'>
+          <MyDatePicker
+            time={time}
+            setNewTime={setTime}
+          ></MyDatePicker>
+        </div>
+        <div className='birthdaysOn'>
+          {birthdaysMap[getDayKey(time)] &&
+            <BirthdaysOn
+              time={time}
+              birthdays={
+                searchedName ? birthdaysMap[getDayKey(time)].
+                  filter((birthday) => {
+                    return birthday.name.toLowerCase().includes(searchedName.toLocaleLowerCase())
+                  }) : birthdaysMap[getDayKey(time)]}
+              searchedName={searchedName}
+              setNewSearchedName={setSearchedName}
+              setFavourite={setFavourite}
+            ></BirthdaysOn>}
+          {!birthdaysMap[getDayKey(time)] && loading()}
+        </div>
+        <div className='favouritesList'><FavouritesList
+          favoriteBirthdaysMap={getFavouriteBirthdays()}
+        ></FavouritesList>
+        </div>
+      </div>
     </div>
   );
 }

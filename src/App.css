@@ -1,0 +1,21 @@
+.content-Container {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+    grid-template-areas:
+        "leftUpper rightWhole"
+        "leftBottom rightWhole";
+}
+
+.content-Container .myDatePicker {
+    grid-area: leftUpper;
+}
+
+.content-Container .birthdaysOn {
+    grid-area: leftBottom;
+}
+
+.content-Container .favouritesList {
+    grid-area: rightWhole;
+}
