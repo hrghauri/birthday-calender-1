@@ -12,17 +12,10 @@ describe('BirthdaysOn component', () => {
     let birthdays: Birthday[];
     beforeEach(() => {
         time = dayjs('2023-01-18');
-        birthdays = [{
-            id: '0118,0',
-            name: 'Daria Trubnikova, Russian rhythmic gymnast',
-            favourite: false,
-            time: null as any
-        }, {
-            id: '0118,1',
-            name: 'Jacky Ickx, Belgian racing driver',
-            favourite: true,
-            time: null as any
-        }];
+        birthdays = [
+            { id: '0118,0', name: 'Daria Trubnikova, Russian rhythmic gymnast', favourite: true, time: null as any },
+            { id: '0118,1', name: 'Jacky Ickx, Belgian racing driver', favourite: true, time: null as any },
+        ];
         setNewSearchedName = jest.fn();
         setFavourite = jest.fn();
     });

@@ -1,6 +1,7 @@
 import { DayBirthdayMap } from '../../models/Birthday';
 import dayjs from 'dayjs';
 import localeData from 'dayjs/plugin/localeData'
+import './FavouritesList.css';
 dayjs.extend(localeData)
 dayjs().localeData()
 
