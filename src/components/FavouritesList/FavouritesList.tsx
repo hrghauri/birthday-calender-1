@@ -1,21 +1,19 @@
-import React from 'react';
 import { DayBirthdayMap } from '../../models/Birthday';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import localeData from 'dayjs/plugin/localeData'
 dayjs.extend(localeData)
 dayjs().localeData()
 
 
-export default function FavouritesList(props: { favoriteBirthdaysMap: DayBirthdayMap }) {
-    const favouriteBirthdays = props.favoriteBirthdaysMap;
+export default function FavouritesList({ favoriteBirthdaysMap }: { favoriteBirthdaysMap: DayBirthdayMap }) {
 
-    const listItems = () => Object.keys(favouriteBirthdays)
+    const listItems = () => Object.keys(favoriteBirthdaysMap)
         .filter((dayMonthKey: string) => {
-            return favouriteBirthdays[dayMonthKey].length > 0
+            return favoriteBirthdaysMap[dayMonthKey].length > 0
         })
         .sort()
         .map((dayMonthKey: string) => {
-            const birthdays = favouriteBirthdays[dayMonthKey];
+            const birthdays = favoriteBirthdaysMap[dayMonthKey];
             return (
                 <div key={dayMonthKey}>
                     {dayjs.months()[Number((dayMonthKey).substring(0, 2)) - 1]} {[Number((dayMonthKey).substring(2, 4))]}

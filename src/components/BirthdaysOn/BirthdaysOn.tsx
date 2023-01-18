@@ -8,20 +8,15 @@ dayjs().localeData()
 
 
 
-export default function BirthdaysOn(props: {
-    time: Dayjs, birthdays: Birthday[],
-    searchedName: string, setNewSearchedName: Function,
-    setFavourite: Function
-}) {
-    const time = props.time;
-    const searchedName = props.searchedName;
-    const birthdays = props.birthdays;
-    const setNewSearchedName = props.setNewSearchedName;
-    const setFavourite = props.setFavourite;
+export default function BirthdaysOn(
+    { time, birthdays, searchedName, setNewSearchedName, setFavourite }: {
+        time: Dayjs, birthdays: Birthday[],
+        searchedName: string, setNewSearchedName: Function,
+        setFavourite: Function
+    }) {
 
-
-    const listItems = () => birthdays.
-        map((birthday) => {
+    const listItems = () => birthdays
+        .map((birthday) => {
             const className = birthday.favourite ?
                 `myStar myStarId${birthday.id} isFavourite` :
                 `myStar myStarId${birthday.id}`;

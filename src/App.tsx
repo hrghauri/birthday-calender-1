@@ -75,9 +75,6 @@ function App() {
     <div>
       <h1>My Favourite Birthdays App</h1>
       <div className="content-Container">
-        {/* <header className="App-header">
-        <h1>My Favourite Birthdays App</h1>
-      </header> */}
         <div className='myDatePicker'>
           <MyDatePicker
             time={time}
@@ -89,8 +86,8 @@ function App() {
             <BirthdaysOn
               time={time}
               birthdays={
-                searchedName ? birthdaysMap[getDayKey(time)].
-                  filter((birthday) => {
+                searchedName ? birthdaysMap[getDayKey(time)]
+                  .filter((birthday) => {
                     return birthday.name.toLowerCase().includes(searchedName.toLocaleLowerCase())
                   }) : birthdaysMap[getDayKey(time)]}
               searchedName={searchedName}

@@ -2,11 +2,11 @@ import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 
 
-export default function MyDatePicker(props: { time: Dayjs, setNewTime: Function }) {
-    const time: Dayjs = props.time;
+export default function MyDatePicker({ time, setNewTime }: { time: Dayjs, setNewTime: Function }) {
+
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <StaticDatePicker
@@ -15,7 +15,7 @@ export default function MyDatePicker(props: { time: Dayjs, setNewTime: Function 
                 openTo='day'
                 value={time}
                 onChange={(newTime) => {
-                    props.setNewTime(newTime)
+                    setNewTime(newTime)
                 }}
                 renderInput={(params) => <TextField {...params} />}
             />
