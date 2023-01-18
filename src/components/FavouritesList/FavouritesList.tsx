@@ -17,7 +17,7 @@ export default function FavouritesList({ favoriteBirthdaysMap }: { favoriteBirth
             const birthdays = favoriteBirthdaysMap[dayMonthKey];
             return (
                 <div key={dayMonthKey}>
-                    {dayjs.months()[Number((dayMonthKey).substring(0, 2)) - 1]} {[Number((dayMonthKey).substring(2, 4))]}
+                    <strong>{dayjs.months()[Number((dayMonthKey).substring(0, 2)) - 1]}</strong> {[Number((dayMonthKey).substring(2, 4))]}
                     {birthdays.map(birthday => {
                         return <div key={birthday.id}>{birthday.name}</div>
                     })}
